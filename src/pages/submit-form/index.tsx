@@ -26,7 +26,7 @@ export default function Home() {
       }}
     >
       <input name='price' value={price} onChange={(e) => setPrice(e.target.value)} />
-      <button>OK</button>
+      <button>OKK</button>
     </form>
   );
 }
