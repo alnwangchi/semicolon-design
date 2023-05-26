@@ -42,4 +42,3 @@ export default function Page() {
     </section>
   );
 }
-3;

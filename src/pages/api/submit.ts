@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method !== 'POST') return res.status(405).json({ message: 'error method' });
   try {
-    const body = req.body;
+    const { date, customer, price, manufacturingCost, otherCost, invoiceCost } = req.body;
 
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -27,10 +27,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: 'A1:D1',
+      range: 'Allen-list!A1:G1',
       valueInputOption: 'USER_ENTERED',
       requestBody: {
-        values: [[body.price]],
+        values: [[date, customer, 'TODO', price, manufacturingCost, otherCost, invoiceCost]],
       },
     });
 
