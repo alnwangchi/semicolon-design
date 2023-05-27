@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method !== 'POST') return res.status(405).json({ message: 'error method' });
   try {
-    const { date, customer, price, manufacturingCost, otherCost, invoiceCost } = req.body;
+    const { date, customer, content, price, manufacturingCost, otherCost, invoiceCost } = req.body;
 
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       range: 'Allen-list!A1:G1',
       valueInputOption: 'USER_ENTERED',
       requestBody: {
-        values: [[date, customer, 'TODO', price, manufacturingCost, otherCost, invoiceCost]],
+        values: [[date, customer, content, price, manufacturingCost, otherCost, invoiceCost]],
       },
     });
 

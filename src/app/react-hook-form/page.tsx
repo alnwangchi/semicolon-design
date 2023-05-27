@@ -1,28 +1,49 @@
 'use client';
+import { successNotify } from '@/utils/toast';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+
+const defaultValues = {
+  date: '',
+  user: '',
+  customer: '',
+  content: '',
+  price: 0,
+  manufacturingCost: 0,
+  otherCost: 0,
+  invoiceCost: 0,
+};
 
 export default function App() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues,
+  });
 
   const onSubmit = async (data: any) => {
     console.log(data);
 
-    const rawResponse = await fetch('/api/submit', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const rawResponse = await fetch('/api/submit', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    const content = await rawResponse.json();
-    console.log('🚀 ~ content:', content);
+      const content = await rawResponse.json();
+      successNotify();
+      reset();
+      console.log('🚀 ~ content:', content);
+    } catch (e) {
+      console.log('🚀 ~ e:', e);
+    }
   };
   // console.log(errors);
 
@@ -38,6 +59,21 @@ export default function App() {
           </div>
         </div>
 
+        <div className=''>
+          <label htmlFor='user' className='font-semibold'>
+            使用者
+          </label>
+          <div className='relative'>
+            <input
+              type='text'
+              id='user'
+              className='peer'
+              placeholder='user'
+              {...register('user')}
+            />
+            <span className='input-focus-bg peer-focus:w-full' />
+          </div>
+        </div>
         <div className='col-span-2'>
           <label htmlFor='customer' className='font-semibold'>
             客戶
@@ -51,6 +87,19 @@ export default function App() {
               {...register('customer', { required: true })}
             />
             <span className='input-focus-bg peer-focus:w-full' />
+          </div>
+        </div>
+
+        <div className='col-span-2'>
+          <label htmlFor='content' className='font-semibold'>
+            訂單內容
+          </label>
+          <div className='relative'>
+            <textarea
+              id='content'
+              placeholder='content'
+              {...register('content', { required: true })}
+            />
           </div>
         </div>
 
@@ -117,8 +166,11 @@ export default function App() {
             <span className='input-focus-bg peer-focus:w-full' />
           </div>
         </div>
+
+        <button className='col-span-2 text-white bg-primary px-3 py-2 rounded-lg' type='submit'>
+          submit
+        </button>
       </div>
-      <button type='submit'>submit</button>
     </form>
   );
 }

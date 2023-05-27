@@ -12,6 +12,9 @@
   input {
     @apply p-2 min-h-[36px] border border-gray-400 w-full rounded-md outline-none bg-transparent relative z-50;
   }
+  textarea {
+    @apply p-2 min-h-[84px] border border-gray-400 w-full rounded-md outline-none bg-transparent relative z-50;
+  }
   label {
     @apply pl-1 mb-1 inline-block
   }
