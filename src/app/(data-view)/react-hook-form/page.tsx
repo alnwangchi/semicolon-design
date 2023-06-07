@@ -1,11 +1,13 @@
 'use client';
 import Table from '@/components/Table';
 import { successNotify } from '@/utils/toast';
-import React from 'react';
+import { Button } from 'antd';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const defaultValues = {
-  date: '',
+  date: dayjs().format('YYYY-MM-DD'),
   user: '',
   customer: '',
   content: '',
@@ -20,14 +22,32 @@ export default function App() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues,
   });
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
+  console.log(watch('date'));
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  // on initialization
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await fetch('/api/fetch');
+        const data = await res.json();
+        setData(data.data);
+      } catch (e) {
+        console.log('🚀 ~ e:', e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
+  const onSubmit = async (data: any) => {
     try {
       const rawResponse = await fetch('/api/submit', {
         method: 'POST',
@@ -41,19 +61,14 @@ export default function App() {
       const content = await rawResponse.json();
       successNotify();
       reset();
-      console.log('🚀 ~ content:', content);
     } catch (e) {
       console.log('🚀 ~ e:', e);
     }
   };
-  // console.log(errors);
 
   return (
     <>
-      <form
-        className='bg-white p-8 rounded-xl max-w-[480px] h-fit'
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className='bg-white p-8 rounded-xl max-w-[480px] h-fit'>
         <div className='grid grid-cols-2 gap-4'>
           <div className=''>
             <label htmlFor='date' className='font-semibold'>
@@ -172,12 +187,16 @@ export default function App() {
             </div>
           </div>
 
-          <button className='col-span-2 text-white bg-primary px-3 py-2 rounded-lg' type='submit'>
-            submit
-          </button>
+          <Button
+            // loading={loading}
+            onClick={handleSubmit(onSubmit)}
+            className='col-span-2 text-white bg-primary px-3 py-2 rounded-lg'
+          >
+            送出
+          </Button>
         </div>
       </form>
-      <Table className='grow bg-white h-fit' />
+      <Table className='grow bg-white h-fit' data={data} loading={loading} />
     </>
   );
 }

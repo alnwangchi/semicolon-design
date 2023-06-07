@@ -4,71 +4,69 @@ import type { ColumnsType, TableProps } from 'antd/es/table';
 
 interface DataType {
   key: React.Key;
-  name: string;
-  chinese: number;
-  math: number;
-  english: number;
+  date: string;
+  customer: string;
+  content: string;
+  price: number;
+  manufacturingCost: number;
+  otherCost: number;
+  invoiceCost: number;
 }
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Chinese Score',
-    dataIndex: 'chinese',
+    title: '日期',
+    dataIndex: 'date',
+    width: '15%',
     sorter: {
-      compare: (a, b) => a.chinese - b.chinese,
-      multiple: 3,
+      compare: (a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA.getTime() - dateB.getTime();
+      },
     },
   },
   {
-    title: 'Math Score',
-    dataIndex: 'math',
+    title: '客戶',
+    dataIndex: 'customer',
+    width: '15%',
+  },
+  {
+    title: '訂單內容',
+    dataIndex: 'content',
+    width: '30%',
+  },
+  {
+    title: '售價',
+    dataIndex: 'price',
+    width: '16%',
     sorter: {
-      compare: (a, b) => a.math - b.math,
-      multiple: 2,
+      compare: (a, b) => a.price - b.price,
     },
   },
   {
-    title: 'English Score',
-    dataIndex: 'english',
+    title: '製作成本',
+    dataIndex: 'manufacturingCost',
+    width: '8%',
     sorter: {
-      compare: (a, b) => a.english - b.english,
-      multiple: 1,
+      compare: (a, b) => a.manufacturingCost - b.manufacturingCost,
     },
   },
-];
-
-const data: DataType[] = [
   {
-    key: '1',
-    name: 'John Brown',
-    chinese: 98,
-    math: 60,
-    english: 70,
+    title: '其他成本',
+    dataIndex: 'otherCost',
+    width: '8%',
+    sorter: {
+      compare: (a, b) => a.otherCost - b.otherCost,
+    },
   },
   {
-    key: '2',
-    name: 'Jim Green',
-    chinese: 98,
-    math: 66,
-    english: 89,
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    chinese: 98,
-    math: 90,
-    english: 70,
-  },
-  {
-    key: '4',
-    name: 'Jim Red',
-    chinese: 88,
-    math: 99,
-    english: 89,
+    title: '發票成本',
+    dataIndex: 'invoiceCost',
+    width: '8%',
+    sorter: {
+      compare: (a, b) => a.invoiceCost - b.invoiceCost,
+    },
   },
 ];
 
@@ -77,13 +75,17 @@ const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter,
 };
 
 interface Props {
+  data: DataType[];
+  loading?: boolean;
   className?: string;
 }
 
-const Table: React.FC<Props> = ({ className }) => (
-  <div className={className}>
-    <AntdTable columns={columns} dataSource={data} onChange={onChange} />
-  </div>
-);
+const Table: React.FC<Props> = ({ data, loading = true, className }) => {
+  return (
+    <div className={className}>
+      <AntdTable columns={columns} dataSource={data} loading={loading} onChange={onChange} />
+    </div>
+  );
+};
 
 export default Table;
