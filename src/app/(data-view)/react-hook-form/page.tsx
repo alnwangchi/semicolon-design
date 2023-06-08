@@ -28,7 +28,7 @@ export default function App() {
     defaultValues,
   });
 
-  console.log(watch('date'));
+  // console.log(watch('date'));
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   // on initialization

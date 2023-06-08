@@ -4,7 +4,7 @@ import { google } from 'googleapis';
 function formatData(data: any) {
   const formattedData = data.slice(1).map((row: any) => {
     return {
-      key: row[0],
+      key: Math.random().toString(36),
       date: row[0],
       customer: row[1],
       content: row[2],

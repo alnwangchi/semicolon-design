@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
+import RootStyleRegistry from '@/components/RootStyleRegistry';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
@@ -15,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div>
           <Toaster />
         </div>
-        {children}
+        <RootStyleRegistry>{children}</RootStyleRegistry>
       </body>
     </html>
   );

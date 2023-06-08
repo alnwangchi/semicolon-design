@@ -1,6 +1,6 @@
-import React from 'react';
-import { Table as AntdTable } from 'antd';
+import { Table as AntdTable, DatePicker } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
+import React from 'react';
 
 interface DataType {
   key: React.Key;
@@ -81,9 +81,10 @@ interface Props {
 }
 
 const Table: React.FC<Props> = ({ data, loading = true, className }) => {
+  console.log(data);
   return (
-    <div className={className}>
-      <AntdTable columns={columns} dataSource={data} loading={loading} onChange={onChange} />
+    <div className={`${className}`}>
+      {<AntdTable columns={columns} dataSource={data} onChange={onChange} loading={loading} />}
     </div>
   );
 };
