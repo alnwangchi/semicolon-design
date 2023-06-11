@@ -1,6 +1,6 @@
 // 112.05
 
-const DEPOSIT = 100000;
+export const DEPOSIT = 100000;
 
-const ALLEN_DEPOSIT = 20000;
-const TOCO_DEPOSIT = 80000;
+export const ALLEN_DEPOSIT = 20000;
+export const TACO_DEPOSIT = 80000;

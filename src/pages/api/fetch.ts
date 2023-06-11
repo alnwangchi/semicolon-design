@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: 'Allen-list!A1:G',
+      range: 'Taco-list!A1:G',
     });
 
     const rows = response.data.values;

@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: 'Allen-list!A1:G1',
+      range: 'Taco-list!A1:G1',
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [[date, customer, content, price, manufacturingCost, otherCost, invoiceCost]],
