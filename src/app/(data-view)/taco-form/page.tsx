@@ -1,14 +1,17 @@
 'use client';
 import Table from '@/components/Table';
+import Statistic from '@/components/Statistic';
 import { successNotify } from '@/utils/toast';
+import { calcOrders } from '@/utils/calc';
 import { Button } from 'antd';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { TACO_DEPOSIT } from '@/constance/deposit';
 
 const defaultValues = {
   date: dayjs().format('YYYY-MM-DD'),
-  user: '',
+  user: 'Taco',
   customer: '',
   content: '',
   price: 0,
@@ -30,21 +33,25 @@ export default function App() {
 
   // console.log(watch('date'));
   const [data, setData] = useState([]);
+  console.log('🚀 ~ data:', data);
   const [loading, setLoading] = useState(true);
+
+  const getData = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch('/api/fetch');
+      const data = await res.json();
+      setData(data.data);
+    } catch (e) {
+      console.log('🚀 ~ e:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // on initialization
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const res = await fetch('/api/fetch');
-        const data = await res.json();
-        setData(data.data);
-      } catch (e) {
-        console.log('🚀 ~ e:', e);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    getData();
   }, []);
 
   const onSubmit = async (data: any) => {
@@ -63,12 +70,18 @@ export default function App() {
       reset();
     } catch (e) {
       console.log('🚀 ~ e:', e);
+    } finally {
+      getData();
     }
   };
 
+  const calcResult = calcOrders(data);
+
+  const storedBalance = TACO_DEPOSIT - calcResult.totalManufacturingCost;
+
   return (
     <>
-      <form className='bg-white p-8 rounded-xl max-w-[480px] h-fit'>
+      <form className='bg-white p-8 rounded-xl max-w-[400px] h-fit'>
         <div className='grid grid-cols-2 gap-4'>
           <div className=''>
             <label htmlFor='date' className='font-semibold'>
@@ -85,13 +98,13 @@ export default function App() {
             </label>
             <div className='relative'>
               <input
+                readOnly
                 type='text'
                 id='user'
                 className='peer'
                 placeholder='user'
                 {...register('user')}
               />
-              <span className='input-focus-bg peer-focus:w-full' />
             </div>
           </div>
           <div className='col-span-2'>
@@ -188,7 +201,6 @@ export default function App() {
           </div>
 
           <Button
-            // loading={loading}
             onClick={handleSubmit(onSubmit)}
             className='col-span-2 text-white bg-primary px-3 py-2 rounded-lg'
           >
@@ -196,7 +208,14 @@ export default function App() {
           </Button>
         </div>
       </form>
-      <Table className='grow bg-white h-fit' data={data} loading={loading} />
+      <div>
+        <Statistic
+          storedBalance={storedBalance}
+          totalPrice={calcResult.totalPrice}
+          totalBenefit={calcResult.totalBenefit}
+        />
+        <Table className='grow bg-white rounded-xl h-[570px]' data={data} loading={loading} />
+      </div>
     </>
   );
 }

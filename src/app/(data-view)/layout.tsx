@@ -5,5 +5,9 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <section className='flex items-center gap-5 min-h-screen'>{children}</section>;
+  return (
+    <section className='flex justify-center items-center gap-5 min-h-[calc(100vh-46px)] container mx-auto'>
+      {children}
+    </section>
+  );
 }
