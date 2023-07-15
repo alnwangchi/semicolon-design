@@ -4,6 +4,9 @@ import { google } from 'googleapis';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.method !== 'POST') return res.status(405).json({ message: 'error method' });
+
+  const currentUser = req.query.user
+
   try {
     const { date, customer, content, price, manufacturingCost, otherCost, invoiceCost } = req.body;
 
@@ -26,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
-      range: 'Taco-list!A1:G1',
+      range: `${currentUser}-list!A1:G1`,
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values: [[date, customer, content, price, manufacturingCost, otherCost, invoiceCost]],

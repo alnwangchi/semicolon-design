@@ -54,7 +54,7 @@ export default function App() {
 
   const onSubmit = async (data: any) => {
     try {
-      const rawResponse = await fetch('/api/submit', {
+      const rawResponse = await fetch('/api/submit?user=Tacos', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

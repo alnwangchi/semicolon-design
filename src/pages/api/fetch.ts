@@ -21,9 +21,6 @@ function formatData(data: any) {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') return res.status(405).json({ message: 'error method' });
 
-
-  console.log({req: req.query.user})
-
   const currentUser = req.query.user
   try {
     const auth = new google.auth.GoogleAuth({
