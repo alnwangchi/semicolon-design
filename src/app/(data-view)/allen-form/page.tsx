@@ -11,7 +11,7 @@ import { TACO_DEPOSIT } from '@/constance/deposit';
 
 const defaultValues = {
   date: dayjs().format('YYYY-MM-DD'),
-  user: 'Taco',
+  user: 'Allen',
   customer: '',
   content: '',
   price: 0,
@@ -37,7 +37,7 @@ export default function App() {
   const getData = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/fetch?user=Taco');
+      const res = await fetch('/api/fetch?user=Allen');
       const data = await res.json();
       setData(data.data);
     } catch (e) {

@@ -23,7 +23,7 @@ const items: MenuProps['items'] = [
         key: 'taco',
       },
       {
-        label: <Link href='/'>Allen</Link>,
+        label: <Link href='/allen-form'>Allen</Link>,
         key: 'allen',
       },
     ],
